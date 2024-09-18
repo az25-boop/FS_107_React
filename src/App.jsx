@@ -34,6 +34,7 @@ const App = () => {
   const handleSetQuery = (topic) => {
     setQuery(topic);
     setArticles([]);
+    setPage(0);
   };
 
   return (
