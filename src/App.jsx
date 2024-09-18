@@ -1,10 +1,11 @@
+import axios from "axios";
 import { useEffect } from "react";
 
 const App = () => {
   useEffect(() => {
     axios
       .get("https://hn.algolia.com/api/v1/search?query=react")
-      .this((res) => console.log(res.data));
+      .then((res) => console.log(res.data));
   }, []);
   return (
     <div>
