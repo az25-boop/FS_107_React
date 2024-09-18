@@ -11,12 +11,14 @@ const App = () => {
   useEffect(() => {
     const getData = async () => {
       try {
+        setIsLoading(false);
         setIsLoading(true);
         const data = await fetchArticles();
-        setIsLoading(false);
         setArticles(data.hits);
-      } catch (error) {
-        console.log("error", error);
+      } catch {
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
       }
     };
     getData();
@@ -26,6 +28,7 @@ const App = () => {
       <h2>HTTP</h2>
       {articles.length ? <ArticlesList articles={articles} /> : null}
       {isLoading && <Hearts />}
+      {isError && <h2>Шось пішло не так</h2>}
     </div>
   );
 };
