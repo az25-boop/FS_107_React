@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 import { fetchArticles } from "./services/api";
 import ArticlesList from "./components/ArticlesList/ArticlesList";
+import { Hearts } from "react-loader-spinner";
 
 const App = () => {
   const [articles, setArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const getData = async () => {
-      const data = await fetchArticles();
-
-      setArticles(data.hits);
+      try {
+        setIsLoading(true);
+        const data = await fetchArticles();
+        setIsLoading(false);
+        setArticles(data.hits);
+      } catch (error) {
+        console.log("error", error);
+      }
     };
     getData();
   }, []);
@@ -16,6 +23,7 @@ const App = () => {
     <div>
       <h2>HTTP</h2>
       {articles.length ? <ArticlesList articles={articles} /> : null}
+      {isLoading && <Hearts />}
     </div>
   );
 };
