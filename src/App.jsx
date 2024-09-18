@@ -6,6 +6,8 @@ import { Hearts } from "react-loader-spinner";
 const App = () => {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
   useEffect(() => {
     const getData = async () => {
       try {
