@@ -2,19 +2,21 @@ import { useEffect, useState } from "react";
 import { fetchArticles } from "./services/api";
 import ArticlesList from "./components/ArticlesList/ArticlesList";
 import { Hearts } from "react-loader-spinner";
+import SearchBar from "./components/SearchBar/SearchBar";
 
 const App = () => {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [page, setPage] = useState(0);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     const getData = async () => {
       try {
         setIsLoading(false);
         setIsLoading(true);
-        const data = await fetchArticles(page);
+        const data = await fetchArticles(page, query);
         setArticles((prev) => [...prev, ...data.hits]);
       } catch {
         setIsError(true);
@@ -23,15 +25,21 @@ const App = () => {
       }
     };
     getData();
-  }, [page]);
+  }, [page, query]);
 
   const handleChangePage = () => {
     setPage((prev) => prev + 1);
   };
 
+  const handleSetQuery = (topic) => {
+    setQuery(topic);
+    setArticles([]);
+  };
+
   return (
     <div>
       <h2>HTTP</h2>
+      <SearchBar setQuery={handleSetQuery} />
       {articles.length ? <ArticlesList articles={articles} /> : null}
       {isLoading && <Hearts />}
       {isError && <h2>Шось пішло не так</h2>}
